@@ -1,33 +1,22 @@
-//create web server 
+//Create web server 
 const express = require('express');
-//create web app
 const app = express();
+const port = 3000;
 
-//create server
-const server = app.listen(3000, listening);
+// Middleware
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
 
-function listening(){
-    console.log("listening . . . ");
-}
+// Import database
+const db = require('./database.js');
 
-//create a route to the folder
-app.use(express.static('website'));
+// Import routes
+const comments = require('./routes/comments.js');
 
-//create an array to store the data
-const data = [];
+// Use routes
+app.use('/comments', comments);
 
-//create a route to post the data
-app.post('/add', addData);
-
-function addData(request, response){
-    console.log(request.body);
-    data.push(request.body);
-    response.send(request.body);
-}
-
-//create a route to get the data
-app.get('/all', getData);
-
-function getData(request, response){
-    response.send(data);
-}
+// Start server
+app.listen(port, () => {
+  console.log(`App running on port ${port}.`);
+});
