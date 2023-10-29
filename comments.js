@@ -1,14 +1,19 @@
 //create web server 
-var express = require('express');
-var router = express.Router();
-var Comment = require('../models/comment.js');
-var Post = require('../models/post.js');
-var User = require('../models/user.js');
+const express = require('express');
+//create router object 
+const router = express.Router();
+//import comment model 
+const Comment = require('../models/comment');
+//import passport module 
+const passport = require('passport');
 
-//create new comment
-router.post('/', function(req, res, next){
-	var comment = new Comment({
-		content: req.body.content,
-		post: req.body.post, 
+//import comments controller 
+const commentsController = require('../controllers/comments_controller');
 
-    })});
+//create routes for comments 
+router.post('/create',passport.checkAuthentication,commentsController.create);
+
+router.get('/destroy/:id',passport.checkAuthentication,commentsController.destroy);
+
+//export router
+module.exports = router;
